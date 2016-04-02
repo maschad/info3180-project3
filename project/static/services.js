@@ -10,7 +10,8 @@ angular.module('myApp').factory('AuthService',['$q','$timeout','$http', function
       isLoggedIn: isLoggedIn,
       login: login,
       logout: logout,
-      register: register
+      register: register,
+      getUserStatus: getUserStatus
     });
 
     function isLoggedIn() {
@@ -70,6 +71,19 @@ angular.module('myApp').factory('AuthService',['$q','$timeout','$http', function
             });
 
         return deferred.promise;
+    }
+
+    //persistant login for page refresh
+    function getUserStatus() {
+      $http.get('/api/status')
+      // handle success
+      .success(function (data) {
+        user = !!data.status;
+      })
+      // handle error
+      .error(function (data) {
+        user = false;
+      });
     }
 }]);
 

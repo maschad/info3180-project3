@@ -43,3 +43,12 @@ def login():
 def logout():
     session.pop('logged_in',None)
     return jsonify({'result':'success'})
+
+#Check for refresh page to persistant login
+@app.route('/api/status')
+def status():
+    if session.get('logged_in'):
+        if session['logged_in']:
+            return jsonify({'status': True})
+    else:
+        return jsonify({'status': False})
