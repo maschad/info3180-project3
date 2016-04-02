@@ -1,6 +1,12 @@
-from flask import request, jsonify,session
-from project import app, db, bcrypt
+import urlparse
+from urllib import urlretrieve
 
+import BeautifulSoup
+import os
+import requests
+from flask import request, jsonify,session
+
+from project import app, db, bcrypt
 # routes
 from project.models import User
 
@@ -52,3 +58,24 @@ def status():
             return jsonify({'status': True})
     else:
         return jsonify({'status': False})
+
+
+@app.route('/api/user/:id/wishlist', methods=['GET', 'POST'])
+def scrape():
+    url = "http://www.amazon.com/gp/product/1783551623"
+    result = requests.get(url)
+    soup = BeautifulSoup.BeautifulSoup(result.text)
+    og_image = (soup.find('meta', property='og:image') or
+                soup.find('meta', attrs={'name': 'og:image'}))
+    if og_image and og_image['content']:
+        print og_image['content']
+
+    thumbnail_spec = soup.find('link', rel='image_src')
+    if thumbnail_spec and thumbnail_spec['href']:
+        print thumbnail_spec['href']
+
+    for img in soup.findAll("img"):
+        image_url = urlparse.urljoin(url, img["src"])
+        filename = img["src"].split("/")[-1]
+        outpath = os.path.join('test/', filename)
+        urlretrieve(image_url, outpath)
