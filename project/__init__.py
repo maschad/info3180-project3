@@ -6,32 +6,12 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from project.config import BaseConfig
 
 
-# config
 
+# config
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
 
 bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
 
-
-# routes
-
-@app.route('/')
-def index():
-    return app.send_static_file('index.html')
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    pass
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    pass
-
-
-@app.route('/logout', methods=['GET', 'POST'])
-def logout():
-    pass
+from project import views
