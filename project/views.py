@@ -1,11 +1,11 @@
+import os
 import urlparse
 from urllib import urlretrieve
 
+import BeautifulSoup
 import requests
 from flask import request, jsonify,session
 
-import BeautifulSoup
-import os
 from project import app, db, bcrypt
 from project.models import User
 
@@ -63,7 +63,8 @@ def status():
 
 @app.route('/api/user/:id/wishlist', methods=['GET', 'POST'])
 def scrape():
-    url = "http://www.amazon.com/gp/product/1783551623"
+    json_data = request.get_json()
+    url = json_data['url']
     result = requests.get(url)
     soup = BeautifulSoup.BeautifulSoup(result.text)
     og_image = (soup.find('meta', property='og:image') or
@@ -80,3 +81,5 @@ def scrape():
         filename = img["src"].split("/")[-1]
         outpath = os.path.join('test/', filename)
         urlretrieve(image_url, outpath)
+
+    return jsonify()
