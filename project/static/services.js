@@ -78,7 +78,11 @@ angular.module('myApp').factory('AuthService',['$q','$timeout','$http', function
       $http.get('/api/status')
       // handle success
       .success(function (data) {
-        user = !!data.status;
+          if (data.status) {
+              user = true;
+          } else {
+              user = false;
+          }
       })
       // handle error
       .error(function (data) {

@@ -1,11 +1,11 @@
-import os
 import urlparse
 from urllib import urlretrieve
 
-import BeautifulSoup
 import requests
 from flask import request, jsonify,session
 
+import BeautifulSoup
+import os
 from project import app, db, bcrypt
 from project.models import User
 
@@ -50,7 +50,8 @@ def logout():
     session.pop('logged_in',None)
     return jsonify({'result':'success'})
 
-#Check for refresh page to persistant login
+
+##Check for refresh page to persistant login
 @app.route('/api/status')
 def status():
     if session.get('logged_in'):
