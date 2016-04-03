@@ -8,6 +8,11 @@
 </head>
   <body>
     <div class="container">
+        <ul class="nav nav-pills nav-justified">
+            <li class="active" ng-hide="AuthService.getUserStatus()"><a data-toggle="pill" ng-href="#login">Login</a>
+            </li>
+            <li ng-hide="$root.loggedIn"><a data-toggle="pill" ng-href="#register">Register</a></li>
+        </ul>
       <div ng-view></div>
     </div>
     <!-- scripts -->
