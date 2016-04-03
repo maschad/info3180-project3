@@ -1,16 +1,16 @@
+import os
 import urlparse
 from urllib import urlretrieve
 
 import BeautifulSoup
-import os
 import requests
 from flask import request, jsonify,session
 
 from project import app, db, bcrypt
-# routes
 from project.models import User
 
 
+# routes
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
