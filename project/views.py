@@ -1,4 +1,4 @@
-import json
+import urlparse
 
 import BeautifulSoup
 import requests
@@ -90,6 +90,7 @@ def add_item():
     soup = BeautifulSoup.BeautifulSoup(result)
     for img in soup.findAll("img", src=True):
         if "sprite" not in img["src"]:
-            images.append(img.get('src'))
+            images.append(urlparse.urljoin(url, img["src"]))
 
-    return json.dumps({'images': images})
+    print images[0]
+    return jsonify({'images': images})
