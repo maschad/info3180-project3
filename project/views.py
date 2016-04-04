@@ -1,13 +1,11 @@
-import os
-import urlparse
-from urllib import urlretrieve
+import json
 
 import BeautifulSoup
 import requests
 from flask import request, jsonify,session
 
 from project import app, db, bcrypt
-from project.models import User
+from project.models import User, Item
 
 
 # routes
@@ -61,25 +59,37 @@ def status():
         return jsonify({'status': False})
 
 
-@app.route('/api/user/:id/wishlist', methods=['GET', 'POST'])
-def scrape():
+@app.route('/api/user/wishlist/<user_id>', methods=['POST'])
+def add(user_id):
+    data = request.get_json()
+    name = data['name']
+    description = data['description']
+    url = data['url']
+    item = Item(name, description, url, user_id)
+    db.session.add(item)
+    db.session.commit()
+    response = jsonify({'name': item.name, 'description': item.description, 'url': url})
+    return response
+
+
+@app.route('/api/user/wishlist/<user_id>', methods=['GET'])
+def view(user_id):
+    user = db.session.query(User).filter_by(id=user_id).first()
+    items = user.items
+    result = {'items': items, 'firstname': user.firstname, 'lastname': user.lastname}
+    return jsonify(result)
+
+
+@app.route('/api/add_item', methods=['POST'])
+def add_item():
+    images = []
+
     json_data = request.get_json()
     url = json_data['url']
-    result = requests.get(url)
-    soup = BeautifulSoup.BeautifulSoup(result.text)
-    og_image = (soup.find('meta', property='og:image') or
-                soup.find('meta', attrs={'name': 'og:image'}))
-    if og_image and og_image['content']:
-        print og_image['content']
+    result = requests.get(url).text
+    soup = BeautifulSoup.BeautifulSoup(result)
+    for img in soup.findAll("img", src=True):
+        if "sprite" not in img["src"]:
+            images.append(img.get('src'))
 
-    thumbnail_spec = soup.find('link', rel='image_src')
-    if thumbnail_spec and thumbnail_spec['href']:
-        print thumbnail_spec['href']
-
-    for img in soup.findAll("img"):
-        image_url = urlparse.urljoin(url, img["src"])
-        filename = img["src"].split("/")[-1]
-        outpath = os.path.join('test/', filename)
-        urlretrieve(image_url, outpath)
-
-    return jsonify()
+    return json.dumps({'images': images})

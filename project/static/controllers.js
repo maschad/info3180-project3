@@ -79,3 +79,20 @@ angular.module('myApp').controller('registerController',
 
 }]);
 
+angular.module('myApp').controller('homeController', ['$scope', '$location', '$http', '$log',
+  function ($scope, $location, $http, $log) {
+
+    $scope.add = function (url) {
+      $http.post('/api/add_item', {'url': url}).success(function (data) {
+        $scope.images = data.images;
+        $scope.imgUrl = $scope.images[0].url;
+      }).error(function (data) {
+        $log.log(data);
+      })
+    };
+
+    $scope.changeImage = function (image) {
+      $scope.imgUrl = image;
+    }
+  }]);
+
