@@ -21,7 +21,7 @@ angular.module('myApp').factory('AuthService',['$q','$timeout','$http', function
     function login(email,password) {
         var deferred = $q.defer();
 
-        $http.post('/api/login',{email: email, password: password})
+        $http.post('/api/user/login', {email: email, password: password})
 
             .success(function (data, status) {
             if(status==200 && data.result){
@@ -43,7 +43,7 @@ angular.module('myApp').factory('AuthService',['$q','$timeout','$http', function
     function logout() {
         var deferred = $q.defer();
 
-        $http.get('/api/logout')
+        $http.get('/api/user/logout')
             .success(function (data) {
                 user = false;
                 deferred.resolve();
@@ -58,7 +58,7 @@ angular.module('myApp').factory('AuthService',['$q','$timeout','$http', function
     function register(email, password) {
         var deferred = $q.defer();
 
-        $http.post('/api/register',{email:email,password:password})
+        $http.post('/api/user/register', {email: email, password: password})
             .success(function (data, status) {
                 if(status==200 && data.result){
                     deferred.resolve();
@@ -75,13 +75,13 @@ angular.module('myApp').factory('AuthService',['$q','$timeout','$http', function
 
     //persistant login for page refresh
     function getUserStatus() {
-      $http.get('/api/status')
+        $http.get('/api/user/status')
       // handle success
       .success(function (data) {
           if (data.status) {
-              user = true;
+              return true;
           } else {
-              user = false;
+              return false;
           }
       })
       // handle error

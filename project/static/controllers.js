@@ -32,7 +32,7 @@ angular.module('myApp').controller('loginController',
 
 }]);
 
-angular.module('myApp').controller('logoutController',
+angular.module('myApp').controller('homeController',
   ['$scope', '$location', 'AuthService',
   function ($scope, $location, AuthService) {
 
@@ -79,11 +79,11 @@ angular.module('myApp').controller('registerController',
 
 }]);
 
-angular.module('myApp').controller('homeController', ['$scope', '$location', '$http', '$log',
+angular.module('myApp').controller('addController', ['$scope', '$location', '$http', '$log',
   function ($scope, $location, $http, $log) {
 
     $scope.add = function (url) {
-      $http.post('/api/add_item', {'url': url})
+        $http.post('/api/thumbnail/process', {'url': url})
           .success(function (data) {
             $scope.images = data.images;
             $scope.imgUrl = $scope.images[0];

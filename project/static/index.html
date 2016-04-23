@@ -6,15 +6,18 @@
   <!-- styles -->
     <link href="static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-  <body>
-    <div class="container">
+<body class="container">
+<nav class="navbar-default navbar-fixed-top">
         <ul class="nav nav-pills nav-justified">
             <li class="active" ng-hide="AuthService.getUserStatus()"><a data-toggle="pill" ng-href="#login">Login</a>
             </li>
-            <li ng-hide="$root.loggedIn"><a data-toggle="pill" ng-href="#register">Register</a></li>
+            <li ng-hide="AuthService.getUserStatus()"><a data-toggle="pill" ng-href="#register">Register</a></li>
+            <li ng-show="AuthService.getUserStatus()"><a data-toggle="pill" ng-href="#home">Home</a></li>
+            <li ng-show="AuthService.getUserStatus()"><a data-toggle="pill" ng-href="#add">Add</a></li>
         </ul>
       <div ng-view></div>
     </div>
+</nav>
     <!-- scripts -->
     <script src="static/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="static/bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>

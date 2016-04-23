@@ -11,9 +11,9 @@ myApp.config(function ($routeProvider) {
       controller: 'loginController'
 
     })
-    .when('/logout', {
-      controller: 'logoutController'
-
+      .when('/add', {
+        templateUrl: 'static/partials/add.html',
+        controller: 'addController'
     })
     .when('/register', {
       templateUrl: 'static/partials/register.html',
@@ -29,7 +29,7 @@ myApp.config(function ($routeProvider) {
 
     })
     .otherwise({
-      redirectTo: '/'
+      redirectTo: '/login'
     });
 });
 

@@ -1,10 +1,10 @@
 import urlparse
 
-import BeautifulSoup
 import requests
 from flask import request, jsonify, session, g
 from flask.ext.httpauth import HTTPBasicAuth
 
+import BeautifulSoup
 from project import app, db
 from project.models import User, Item
 
@@ -25,14 +25,14 @@ def verify_password(username_or_token, password):
     return True
 
 # routes
-@app.route('/api/token')
+@app.route('/api/user/token')
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
     return jsonify({'token': token.decode('ascii')})
 
 
-@app.route('/api/resource')
+@app.route('/api/user/resource')
 @auth.login_required
 def get_resource():
     return jsonify({'data': 'Hello, %s!' % g.user.username})
@@ -42,7 +42,7 @@ def index():
     return app.send_static_file('index.html')
 
 
-@app.route('/api/register', methods=['POST'])
+@app.route('/api/user/register', methods=['POST'])
 def register():
     email = request.json.get('email')
     password = request.json.get('password')
@@ -57,7 +57,8 @@ def register():
     db.session.close()
     return jsonify({'result':status})
 
-@app.route('/api/login', methods=['GET', 'POST'])
+
+@app.route('/api/user/login', methods=['GET', 'POST'])
 def login():
     json_data = request.json
     user = User.query.filter_by(email=json_data['email']).first()
@@ -69,14 +70,14 @@ def login():
     return jsonify({'result':status})
 
 
-@app.route('/api/logout', methods=['GET', 'POST'])
+@app.route('/api/user/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('logged_in',None)
     return jsonify({'result':'success'})
 
 
 ##Check for refresh page to persistant login
-@app.route('/api/status')
+@app.route('/api/user/status')
 @auth.login_required
 def status():
     if session.get('logged_in'):
@@ -86,7 +87,7 @@ def status():
         return jsonify({'status': False})
 
 
-@app.route('/api/user/wishlist/<user_id>', methods=['POST'])
+@app.route('/api/user/<user_id>/wishlist', methods=['POST'])
 def add(user_id):
     data = request.get_json()
     name = data['name']
@@ -99,7 +100,7 @@ def add(user_id):
     return response
 
 
-@app.route('/api/user/wishlist/<user_id>', methods=['GET'])
+@app.route('/api/user/<user_id>/wishlist', methods=['GET'])
 @auth.login_required
 def view(user_id):
     user = db.session.query(User).filter_by(id=user_id).first()
@@ -108,7 +109,7 @@ def view(user_id):
     return jsonify(result)
 
 
-@app.route('/api/add_item', methods=['POST'])
+@app.route('/api/thumbnail/process', methods=['POST'])
 @auth.login_required
 def add_item():
     images = []
