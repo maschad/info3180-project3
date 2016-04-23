@@ -13,6 +13,7 @@ auth = HTTPBasicAuth()
 
 @auth.verify_password
 def verify_password(username_or_token, password):
+    print username_or_token
     # first try to authenticate by token
     user = User.verify_auth_token(username_or_token)
     if not user:
@@ -86,7 +87,6 @@ def status():
 
 
 @app.route('/api/user/wishlist/<user_id>', methods=['POST'])
-@auth.login_required
 def add(user_id):
     data = request.get_json()
     name = data['name']
