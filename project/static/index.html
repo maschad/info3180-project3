@@ -9,11 +9,11 @@
 <body class="container">
 <nav class="navbar-default navbar-fixed-top">
         <ul class="nav nav-pills nav-justified">
-            <li class="active" ng-hide="AuthService.getUserStatus()"><a data-toggle="pill" ng-href="#login">Login</a>
+            <li class="active" ng-hide="$root.user"><a data-toggle="pill" ng-href="#login">Login</a>
             </li>
-            <li ng-hide="AuthService.getUserStatus()"><a data-toggle="pill" ng-href="#register">Register</a></li>
-            <li ng-show="AuthService.getUserStatus()"><a data-toggle="pill" ng-href="#home">Home</a></li>
-            <li ng-show="AuthService.getUserStatus()"><a data-toggle="pill" ng-href="#add">Add</a></li>
+            <li ng-hide="$root.user"><a data-toggle="pill" ng-href="#register">Register</a></li>
+            <li ng-show="$root.user"><a data-toggle="pill" ng-href="#home">Home</a></li>
+            <li ng-show="$root.user"><a data-toggle="pill" ng-href="#add">Add</a></li>
         </ul>
       <div ng-view></div>
     </div>

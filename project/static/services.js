@@ -2,10 +2,8 @@
  * Created by chad on 4/2/16.
  */
 
-angular.module('myApp').factory('AuthService',['$q','$timeout','$http', function ($q, $timeout, $http) {
-
-    var user = null;
-
+angular.module('myApp').factory('AuthService', ['$q', '$timeout', '$http', '$rootScope', function ($q, $timeout, $http, $rootScope) {
+    
     return ({
       isLoggedIn: isLoggedIn,
       login: login,
@@ -25,10 +23,10 @@ angular.module('myApp').factory('AuthService',['$q','$timeout','$http', function
 
             .success(function (data, status) {
             if(status==200 && data.result){
-                user = true;
+                $rootScope.user = true;
                 deferred.resolve();
             }else{
-                user = false;
+                $rootScope.user = false;
                 deferred.reject();
             }
         })
@@ -45,11 +43,11 @@ angular.module('myApp').factory('AuthService',['$q','$timeout','$http', function
 
         $http.get('/api/user/logout')
             .success(function (data) {
-                user = false;
+                $rootScope.user = false;
                 deferred.resolve();
             })
             .error(function (data) {
-                user = false;
+                $rootScope.user = false;
                 deferred.reject();
             });
         return deferred.promise;
@@ -79,14 +77,15 @@ angular.module('myApp').factory('AuthService',['$q','$timeout','$http', function
       // handle success
       .success(function (data) {
           if (data.status) {
-              return true;
+              $rootScope.user = true;
           } else {
-              return false;
+              $rootScope.user = false;
           }
       })
       // handle error
       .error(function (data) {
-        user = false;
+          console.log(data);
+          $rootScope.user = false;
       });
     }
 }]);
