@@ -2,14 +2,13 @@
  * Created by chad on 4/2/16.
  */
 
-angular.module('myApp').factory('AuthService', ['$q', '$timeout', '$http', '$rootScope', function ($q, $timeout, $http, $rootScope) {
+angular.module('myApp').factory('AuthService', ['$q', '$timeout', '$http', function ($q, $timeout, $http) {
     var user = null;
     return ({
       isLoggedIn: isLoggedIn,
       login: login,
       logout: logout,
-      register: register,
-      getUserStatus: getUserStatus
+        register: register
     });
 
     function isLoggedIn() {
@@ -71,26 +70,6 @@ angular.module('myApp').factory('AuthService', ['$q', '$timeout', '$http', '$roo
         return deferred.promise;
     }
 
-    //persistant login for page refresh
-    function getUserStatus() {
-        return $http.get('/api/user/status')
-      // handle success
-      .success(function (data) {
-          if (data.status) {
-              user = true;
-              $rootScope.user = user;
-          } else {
-              user = false;
-              $rootScope.user = user;
-          }
-      })
-      // handle error
-      .error(function (data) {
-          console.log(data);
-          user = false;
-          $rootScope.user = user;
-      });
-    }
 }]);
 
 

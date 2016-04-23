@@ -76,16 +76,6 @@ def logout():
     return jsonify({'result':'success'})
 
 
-# Check for refresh page to persistant login
-@app.route('/api/user/status')
-def status():
-    if session.get('logged_in'):
-        if session['logged_in']:
-            return jsonify({'status': True})
-    else:
-        return jsonify({'status': False})
-
-
 @app.route('/api/user/<user_id>/wishlist', methods=['POST'])
 def add(user_id):
     data = request.get_json()

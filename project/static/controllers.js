@@ -3,8 +3,8 @@
  */
 
 angular.module('myApp').controller('loginController',
-  ['$scope', '$location', 'AuthService',
-  function ($scope, $location, AuthService) {
+    ['$scope', '$location', 'AuthService', '$cookies', '$rootScope',
+        function ($scope, $location, AuthService, $cookies, $rootScope) {
 
     $scope.login = function () {
 
@@ -16,6 +16,8 @@ angular.module('myApp').controller('loginController',
       AuthService.login($scope.loginForm.email, $scope.loginForm.password)
         // handle success
         .then(function () {
+            $cookies.put('online', true);
+            $rootScope.user = true;
             $location.path('/home');
           $scope.disabled = false;
           $scope.loginForm = {};
@@ -33,14 +35,16 @@ angular.module('myApp').controller('loginController',
   }])
 
     .controller('homeController',
-  ['$scope', '$location', 'AuthService',
-  function ($scope, $location, AuthService) {
+        ['$scope', '$location', 'AuthService', '$cookies', '$rootScope',
+            function ($scope, $location, AuthService, $cookies, $rootScope) {
 
     $scope.logout = function () {
 
       // call logout from service
       AuthService.logout()
         .then(function () {
+            $cookies.put('online', false);
+            $rootScope.user = false;
           $location.path('/login');
         });
 

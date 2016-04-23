@@ -33,3 +33,11 @@ myApp.config(function ($routeProvider) {
     });
 });
 
+myApp.run(['$cookies', '$rootScope', function ($cookies, $rootScope) {
+  if (!$cookies.get('online')) {
+    $cookies.put('online', false);
+    $rootScope.user = false;
+  } else if ($cookies.get('online') === 'true') {
+    $rootScope.user = true;
+  }
+}]);
