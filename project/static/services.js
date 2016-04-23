@@ -3,7 +3,7 @@
  */
 
 angular.module('myApp').factory('AuthService', ['$q', '$timeout', '$http', '$rootScope', function ($q, $timeout, $http, $rootScope) {
-    
+    var user = null;
     return ({
       isLoggedIn: isLoggedIn,
       login: login,
@@ -23,10 +23,10 @@ angular.module('myApp').factory('AuthService', ['$q', '$timeout', '$http', '$roo
 
             .success(function (data, status) {
             if(status==200 && data.result){
-                $rootScope.user = true;
+                user = true;
                 deferred.resolve();
             }else{
-                $rootScope.user = false;
+                user = false;
                 deferred.reject();
             }
         })
@@ -43,11 +43,11 @@ angular.module('myApp').factory('AuthService', ['$q', '$timeout', '$http', '$roo
 
         $http.get('/api/user/logout')
             .success(function (data) {
-                $rootScope.user = false;
+                user = false;
                 deferred.resolve();
             })
             .error(function (data) {
-                $rootScope.user = false;
+                user = false;
                 deferred.reject();
             });
         return deferred.promise;
@@ -73,20 +73,24 @@ angular.module('myApp').factory('AuthService', ['$q', '$timeout', '$http', '$roo
 
     //persistant login for page refresh
     function getUserStatus() {
-        $http.get('/api/user/status')
+        return $http.get('/api/user/status')
       // handle success
       .success(function (data) {
           if (data.status) {
-              $rootScope.user = true;
+              user = true;
+              $rootScope.user = user;
           } else {
-              $rootScope.user = false;
+              user = false;
+              $rootScope.user = user;
           }
       })
       // handle error
       .error(function (data) {
           console.log(data);
-          $rootScope.user = false;
+          user = false;
+          $rootScope.user = user;
       });
     }
 }]);
+
 

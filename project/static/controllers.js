@@ -30,9 +30,9 @@ angular.module('myApp').controller('loginController',
 
     };
 
-}]);
+  }])
 
-angular.module('myApp').controller('homeController',
+    .controller('homeController',
   ['$scope', '$location', 'AuthService',
   function ($scope, $location, AuthService) {
 
@@ -46,9 +46,9 @@ angular.module('myApp').controller('homeController',
 
     };
 
-}]);
+  }])
 
-angular.module('myApp').controller('registerController',
+    .controller('registerController',
   ['$scope', '$location', 'AuthService',
   function ($scope, $location, AuthService) {
 
@@ -77,9 +77,9 @@ angular.module('myApp').controller('registerController',
 
     };
 
-}]);
+  }])
 
-angular.module('myApp').controller('addController', ['$scope', '$location', '$http', '$log',
+    .controller('addController', ['$scope', '$location', '$http', '$log',
   function ($scope, $location, $http, $log) {
 
     $scope.add = function (url) {

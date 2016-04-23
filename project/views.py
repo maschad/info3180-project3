@@ -1,10 +1,10 @@
 import urlparse
 
+import BeautifulSoup
 import requests
 from flask import request, jsonify, session, g
 from flask.ext.httpauth import HTTPBasicAuth
 
-import BeautifulSoup
 from project import app, db
 from project.models import User, Item
 
@@ -76,9 +76,8 @@ def logout():
     return jsonify({'result':'success'})
 
 
-##Check for refresh page to persistant login
+# Check for refresh page to persistant login
 @app.route('/api/user/status')
-@auth.login_required
 def status():
     if session.get('logged_in'):
         if session['logged_in']:
